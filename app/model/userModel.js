@@ -9,6 +9,7 @@ var User = function(user){
     this.contact = user.contact;
     this.email = user.email;
 };
+
 User.createUser = function createUser(newUser, result) {    
         sql.query("INSERT INTO user set ?", newUser, function (err, res) {
                 

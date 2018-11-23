@@ -2,6 +2,7 @@
 module.exports = function (app) {
     var todoList = require('../controller/appController');
     var user = require('../controller/userController');
+    var point = require('../controller/pointController');
 
     // todoList Routes
     app.route('/tasks')
@@ -22,4 +23,14 @@ module.exports = function (app) {
         .get(user.read_a_user)
         .put(user.update_a_user)
         .delete(user.delete_a_user);
+
+    //pointRoutes
+    app.route('/points')
+        .get(point.list_all_points)
+        .post(point.create_a_point);
+
+    app.route('/points/:pointId')
+        .get(point.read_a_point)
+        .put(point.update_a_point)
+        .delete(point.delete_a_point);
 };
