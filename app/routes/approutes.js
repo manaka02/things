@@ -3,6 +3,7 @@ module.exports = function (app) {
     var todoList = require('../controller/appController');
     var user = require('../controller/userController');
     var point = require('../controller/pointController');
+    var trajet = require('../controller/trajetController');
 
     // todoList Routes
     app.route('/tasks')
@@ -33,4 +34,15 @@ module.exports = function (app) {
         .get(point.read_a_point)
         .put(point.update_a_point)
         .delete(point.delete_a_point);
-};
+
+
+    //trajetRoutes
+    app.route('/trajet')
+    .get(trajet.list_all_trajets)
+    .post(trajet.create_a_trajet);
+
+    app.route('/trajet/:trajetId')
+        .get(trajet.read_a_trajet)
+        .put(trajet.update_a_trajet)
+        .delete(trajet.delete_a_trajet);
+    };

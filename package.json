@@ -11,7 +11,9 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "node-geocoder": "^3.22.0",
+    "reverse-geocoding": "^3.0.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"

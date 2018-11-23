@@ -1,13 +1,14 @@
 'user strict';
 var sql = require('./db.js');
+var geocoding = new require('reverse-geocoding');
 
 //Trajet object constructor
 var Trajet = function (trajet) {
     this.datecreation = new Date();
     this.datedepart = trajet.trajet;
     this.statut = trajet.status;
-    this.status = trajet.status;
-    this.created_at = new Date();
+    this.depart = trajet.depart;
+    this.destination = trajet.destination;
 };
 Trajet.createTrajet = function createUser(newTrajet, result) {
     sql.query("INSERT INTO trajet set ?", newTrajet, function (err, res) {
@@ -34,19 +35,21 @@ Trajet.getTrajetById = function createUser(trajetId, result) {
         }
     });
 };
-Trajet.getAllTrajet = function getAllTrajet(result) {
-    sql.query("Select * from trajet", function (err, res) {
 
-        if (err) {
-            console.log("error: ", err);
-            result(null, err);
-        }
-        else {
-            console.log('trajet : ', res);
+Trajet.getAllTrajet = function getAllTrajet(geocoding) {
+    ;
+    // sql.query("Select * from trajet", function (err, res) {
 
-            result(null, res);
-        }
-    });
+    //     if (err) {
+    //         console.log("error: ", err);
+    //         result(null, err);
+    //     }
+    //     else {
+    //         console.log('trajet : ', res);
+
+    //         result(null, res);
+    //     }
+    // });
 };
 Trajet.updateById = function (trajetid, trajet, result) {
     sql.query("UPDATE trajet SET trajet = ? WHERE trajetid = ?", [trajet.trajet, trajetid], function (err, res) {
