@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Ven 23 Novembre 2018 à 13:59
+-- Généré le :  Ven 23 Novembre 2018 à 19:57
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.0.3
 
@@ -23,25 +23,27 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `joindre`
+--
+
+CREATE TABLE `joindre` (
+  `joindreid` int(11) NOT NULL,
+  `trajetid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `point`
 --
 
 CREATE TABLE `point` (
   `pointid` int(11) NOT NULL,
   `latitude` double NOT NULL,
-  `longitude` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `pointuser`
---
-
-CREATE TABLE `joindre` (
-  `joindreid` int(11) NOT NULL,
-  `pointid` int(11) NOT NULL,
-  `userid` int(11) NOT NULL
+  `longitude` double NOT NULL,
+  `suburb` varchar(250) NOT NULL,
+  `city` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -95,7 +97,8 @@ CREATE TABLE `user` (
   `prenom` varchar(250) NOT NULL,
   `cin` varchar(250) NOT NULL,
   `contact` varchar(250) NOT NULL,
-  `email` varchar(250) NOT NULL
+  `email` varchar(250) NOT NULL,
+  `password` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -103,16 +106,18 @@ CREATE TABLE `user` (
 --
 
 --
+-- Index pour la table `joindre`
+--
+ALTER TABLE `joindre`
+  ADD PRIMARY KEY (`joindreid`),
+  ADD KEY `pointuser_point_FK` (`trajetid`),
+  ADD KEY `pointuser_user0_FK` (`userid`);
+
+--
 -- Index pour la table `point`
 --
 ALTER TABLE `point`
   ADD PRIMARY KEY (`pointid`);
-
-
-
-
---
-
 
 --
 -- Index pour la table `tasks`
@@ -161,13 +166,12 @@ ALTER TABLE `user`
 --
 -- Contraintes pour les tables exportées
 --
-ALTER TABLE `joindre`
-  ADD PRIMARY KEY (`joindreid`);
+
 --
--- Contraintes pour la table `pointuser`
+-- Contraintes pour la table `joindre`
 --
 ALTER TABLE `joindre`
-  ADD CONSTRAINT `pointuser_point_FK` FOREIGN KEY (`pointid`) REFERENCES `point` (`pointid`),
+  ADD CONSTRAINT `pointuser_point_FK` FOREIGN KEY (`trajetid`) REFERENCES `trajet` (`trajetid`),
   ADD CONSTRAINT `pointuser_user0_FK` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`);
 
 --

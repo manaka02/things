@@ -1,16 +1,17 @@
 'user strict';
 var sql = require('./db.js');
-var geocoding = new require('reverse-geocoding');
+var point = require('./pointModel.js');
 
 //Trajet object constructor
 var Trajet = function (trajet) {
     this.datecreation = new Date();
     this.datedepart = trajet.trajet;
-    this.statut = trajet.status;
-    this.depart = trajet.depart;
+    this.statut =0;
+    this.depart = trajet.depart ;
     this.destination = trajet.destination;
 };
 Trajet.createTrajet = function createUser(newTrajet, result) {
+    $createPoint = point.createPoint(newTrajet.depart);
     sql.query("INSERT INTO trajet set ?", newTrajet, function (err, res) {
 
         if (err) {
@@ -23,6 +24,10 @@ Trajet.createTrajet = function createUser(newTrajet, result) {
         }
     });
 };
+
+
+
+
 Trajet.getTrajetById = function createUser(trajetId, result) {
     sql.query("Select trajet from trajet where trajetid = ? ", trajetId, function (err, res) {
         if (err) {

@@ -10,41 +10,59 @@ var Point = function (point) {
     this.city = point.city;
 };
 Point.createPoint = function createPoint(newPoint, result) {
-    reverse.reverseGeoLocate(newPoint, function (err, res) {
+    console.log("---- create point ----");
+    checkOldPoint = Point.checkExistedPoint(newPoint)
 
-        if (err) {
-            console.log("error: ", err);
-            result(err, null);
+    checkOldPoint.then(function res1(oldPoint) {
+        if(oldPoint.length > 0){
+            console.log("old point already exist");
+            result(null, oldPoint[0].pointid);
+        }else{
+            console.log("---- Point not found ----");
+            console.log("---- create new point ----");
+            data = reverse.getGeoLocalisationData(newPoint)
+            data.then(function(res) {
+                suburb = res.results[0].components.suburb;
+                city = res.results[0].components.city;
+                !suburb ? suburb = city  : null;
+                newPoint.suburb = suburb;
+                newPoint.city = city;
+                console.log("---- Point with geolocalisation Data ----");
+                console.log(newPoint);
+                sql.query("INSERT INTO point set ?", newPoint, function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                    }
+                    else {
+                        
+                        result(null, res.insertId);
+                    }
+                });
+            }).catch(function(e) {
+                console.log(e); // "zut !"
+            }).then(function(e) {
+                console.log('après le catch, la chaîne est restaurée');
+            });
         }
-        else {
-            newPoint.geoData = res;
-            console.log("res.results")
-            console.log(JSON.stringify(newPoint.geoData.results[0].components.suburb))
-            // sql.query("INSERT INTO point set ?", newPoint, function (err, res) {
-            //     if (err) {
-            //         console.log("error: ", err);
-            //         result(err, null);
-            //     }
-            //     else {
-            //         console.log(res.insertId);
-            //         result(null, res.insertId);
-            //     }
-            // });
-            result(err, null);
-        }
-    });
-    // sql.query("INSERT INTO point set ?", newPoint, function (err, res) {
-
-    //     if (err) {
-    //         console.log("error: ", err);
-    //         result(err, null);
-    //     }
-    //     else {
-    //         console.log(res.insertId);
-    //         result(null, res.insertId);
-    //     }
-    // });
+    })
+    
 };
+
+Point.checkExistedPoint = function checkExist(newPoint) {
+    return new Promise(function (resolve, reject) {
+        sql.query("Select * from point where latitude = ? and longitude = ?", [newPoint.latitude, newPoint.longitude], function (err, res) {
+            if (err) {
+                reject(err);
+            } else {
+                console.log("res here")
+                console.log(res)
+                resolve(res);
+            }
+        });
+    })
+};
+
 Point.getPointById = function createPoint(pointId, result) {
     sql.query("Select point from point where pointid = ? ", pointId, function (err, res) {
         if (err) {
