@@ -1,16 +1,13 @@
 'user strict';
 var sql = require('./db.js');
 
-//User object constructor
-var User = function(user){
-    this.nom = user.nom;
-    this.prenom = user.prenom;
-    this.cin = user.cin;
-    this.contact = user.contact;
-    this.email = user.email;
+//Point object constructor
+var Point = function(point){
+    this.latitude = point.latitude;
+    this.longitude = point.longitude;
 };
-User.createUser = function createUser(newUser, result) {    
-        sql.query("INSERT INTO user set ?", newUser, function (err, res) {
+Point.createPoint = function createPoint(newPoint, result) {    
+        sql.query("INSERT INTO point set ?", newPoint, function (err, res) {
                 
                 if(err) {
                     console.log("error: ", err);
@@ -22,8 +19,8 @@ User.createUser = function createUser(newUser, result) {
                 }
             });           
 };
-User.getUserById = function createUser(userid, result) {
-        sql.query("Select user from user where userid = ? ", userid, function (err, res) {             
+Point.getPointById = function createPoint(pointId, result) {
+        sql.query("Select point from point where pointid = ? ", pointId, function (err, res) {             
                 if(err) {
                     console.log("error: ", err);
                     result(err, null);
@@ -34,22 +31,22 @@ User.getUserById = function createUser(userid, result) {
                 }
             });   
 };
-User.getAllUser = function getAllUser(result) {
-        sql.query("Select * from user", function (err, res) {
+Point.getAllPoint = function getAllPoint(result) {
+        sql.query("Select * from point", function (err, res) {
 
                 if(err) {
                     console.log("error: ", err);
                     result(null, err);
                 }
                 else{
-                  console.log('user : ', res);  
+                  console.log('point : ', res);  
 
                  result(null, res);
                 }
             });   
 };
-User.updateById = function(id, user, result){
-  sql.query("UPDATE user SET user = ? WHERE userid = ?", [user.user, id], function (err, res) {
+Point.updateById = function(pointid, point, result){
+  sql.query("UPDATE point SET point = ? WHERE pointid = ?", [point.point, pointid], function (err, res) {
           if(err) {
               console.log("error: ", err);
                 result(null, err);
@@ -59,8 +56,8 @@ User.updateById = function(id, user, result){
                 }
             }); 
 };
-User.remove = function(id, result){
-     sql.query("DELETE FROM user WHERE userid = ?", [id], function (err, res) {
+Point.remove = function(pointid, result){
+     sql.query("DELETE FROM point WHERE pointid = ?", [pointid], function (err, res) {
 
                 if(err) {
                     console.log("error: ", err);
@@ -73,4 +70,4 @@ User.remove = function(id, result){
             }); 
 };
 
-module.exports= User;
+module.exports= Point;
