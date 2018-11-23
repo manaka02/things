@@ -9,6 +9,7 @@ var Point = function (point) {
     this.suburb = point.suburb;
     this.city = point.city;
 };
+
 Point.createPoint = function createPoint(newPoint, result) {
     console.log("---- create point ----");
     checkOldPoint = Point.checkExistedPoint(newPoint)
@@ -28,7 +29,6 @@ Point.createPoint = function createPoint(newPoint, result) {
                 newPoint.suburb = suburb;
                 newPoint.city = city;
                 console.log("---- Point with geolocalisation Data ----");
-                console.log(newPoint);
                 sql.query("INSERT INTO point set ?", newPoint, function (err, res) {
                     if (err) {
                         console.log("error: ", err);
@@ -39,11 +39,7 @@ Point.createPoint = function createPoint(newPoint, result) {
                         result(null, res.insertId);
                     }
                 });
-            }).catch(function(e) {
-                console.log(e); // "zut !"
-            }).then(function(e) {
-                console.log('après le catch, la chaîne est restaurée');
-            });
+            }).catch(console.error);
         }
     })
     

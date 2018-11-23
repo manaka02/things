@@ -5,24 +5,42 @@ var point = require('./pointModel.js');
 //Trajet object constructor
 var Trajet = function (trajet) {
     this.datecreation = new Date();
-    this.datedepart = trajet.trajet;
-    this.statut =0;
-    this.depart = trajet.depart ;
+    this.datedepart = trajet.datedepart;
+    this.statut = 1;
+    this.depart = trajet.depart;
     this.destination = trajet.destination;
 };
-Trajet.createTrajet = function createUser(newTrajet, result) {
-    $createPoint = point.createPoint(newTrajet.depart);
-    sql.query("INSERT INTO trajet set ?", newTrajet, function (err, res) {
+Trajet.createTrajet = function createTrajet(newTrajet, result) {
+    console.log("------ create trajet ------")
 
-        if (err) {
-            console.log("error: ", err);
-            result(err, null);
-        }
-        else {
-            console.log(res.insertId);
-            result(null, res.insertId);
-        }
+    PointList = [];
+    var promises = [newTrajet.depart, newTrajet.destination].map(function (name) {
+        return new Promise(function (resolve, reject) {
+            point.createPoint(newTrajet.depart, function (err, pointid) {
+                if (err) { return reject(err); }
+                PointList.push(pointid);
+                resolve();
+            });
+        });
     });
+
+    Promise.all(promises)
+        .then(function () {
+            newTrajet.depart = PointList[0];
+            newTrajet.destination = PointList[1];
+            console.log(newTrajet);
+            sql.query("INSERT INTO trajet set ?", newTrajet, function (err, res) {
+
+                if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                }
+                else {
+                    console.log(res.insertId);
+                    result(null, res.insertId);
+                }
+            })
+        });
 };
 
 

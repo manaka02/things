@@ -39,7 +39,7 @@ module.exports = function (app) {
 
 
     //trajetRoutes
-    app.route('/trajet')
+    app.route('/trajets')
         .get(trajet.list_all_trajets)
         .post(trajet.create_a_trajet);
 

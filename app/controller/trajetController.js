@@ -19,9 +19,10 @@ exports.create_a_trajet = function (req, res) {
     var new_trajet = new Trajet(req.body);
 
     //handles null error 
-    if (!new_trajet.trajet || !new_trajet.status) {
+    console.log(JSON.stringify(new_trajet))
+    if (!new_trajet.datedepart || !new_trajet.depart || !new_trajet.destination) {
 
-        res.status(400).send({ error: true, message: 'Please provide trajet/status' });
+        res.status(400).send({ error: true, message: 'Invalid data format' });
 
     }
     else {

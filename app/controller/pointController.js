@@ -23,21 +23,16 @@ exports.create_a_point = function (req, res) {
     console.log(new_point)
 
     if (!new_point.latitude || !new_point.longitude) {
-
         res.status(400).send({ error: true, message: 'You send an incomplete/malformed data' });
-
     }
     else {
-
         point.createPoint(new_point, function (err, point) {
-
             if (err)
                 res.send(err);
             res.json(point);
         });
     }
 };
-
 
 exports.read_a_point = function (req, res) {
     point.getPointById(req.params.pointId, function (err, point) {
