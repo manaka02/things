@@ -3,7 +3,7 @@
 var point = require('../model/pointModel.js');
 
 exports.list_all_points = function (req, res) {
-    point.getAllUser(function (err, point) {
+    point.getAllPoint(function (err, point) {
 
         console.log('controller')
         if (err)
