@@ -23,8 +23,10 @@ module.exports = function (app) {
     app.route('/users/:userId')
         .get(user.read_a_user)
         .put(user.update_a_user)
-        .delete(user.delete_a_user);
+        .delete(user.delete_a_user); 
 
+    app.route('/login')
+        .post(user.search_a_user);
     //pointRoutes
     app.route('/points')
         .get(point.list_all_points)
@@ -38,11 +40,11 @@ module.exports = function (app) {
 
     //trajetRoutes
     app.route('/trajet')
-    .get(trajet.list_all_trajets)
-    .post(trajet.create_a_trajet);
+        .get(trajet.list_all_trajets)
+        .post(trajet.create_a_trajet);
 
     app.route('/trajet/:trajetId')
         .get(trajet.read_a_trajet)
         .put(trajet.update_a_trajet)
         .delete(trajet.delete_a_trajet);
-    };
+};

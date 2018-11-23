@@ -22,7 +22,7 @@ exports.create_a_user = function (req, res) {
     console.log('all data')
     console.log(new_user)
 
-    if (!new_user.nom || !new_user.prenom || !new_user.cin || !new_user.contact || !new_user.email) {
+    if (!new_user.nom || !new_user.prenom || !new_user.cin || !new_user.contact || !new_user.email || !new_user.password) {
 
         res.status(400).send({ error: true, message: 'You send an incomplete data' });
 
@@ -37,6 +37,29 @@ exports.create_a_user = function (req, res) {
         });
     }
 };
+
+exports.search_a_user = function (req, res) {
+    var new_user = new user(req.body);
+
+    //handles null error 
+    console.log('all data next')
+    console.log(new_user)
+
+    if (!new_user.email || !new_user.password) {
+
+        res.status(400).send({ error: true, message: 'Invalid mail/password' });
+    }
+    else {
+        user.searchUser(new_user, function (err, user) {
+
+            if (err)
+                res.send(err);
+            res.json(user);
+        });
+    }
+};
+
+
 
 
 exports.read_a_user = function (req, res) {

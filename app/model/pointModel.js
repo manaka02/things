@@ -1,23 +1,49 @@
 'user strict';
 var sql = require('./db.js');
+var reverse = require('./geoCoderModel.js');
 
 //Point object constructor
 var Point = function (point) {
     this.latitude = point.latitude;
     this.longitude = point.longitude;
+    this.suburb = point.suburb;
+    this.city = point.city;
 };
 Point.createPoint = function createPoint(newPoint, result) {
-    sql.query("INSERT INTO point set ?", newPoint, function (err, res) {
+    reverse.reverseGeoLocate(newPoint, function (err, res) {
 
         if (err) {
             console.log("error: ", err);
             result(err, null);
         }
         else {
-            console.log(res.insertId);
-            result(null, res.insertId);
+            newPoint.geoData = res;
+            console.log("res.results")
+            console.log(JSON.stringify(newPoint.geoData.results[0].components.suburb))
+            // sql.query("INSERT INTO point set ?", newPoint, function (err, res) {
+            //     if (err) {
+            //         console.log("error: ", err);
+            //         result(err, null);
+            //     }
+            //     else {
+            //         console.log(res.insertId);
+            //         result(null, res.insertId);
+            //     }
+            // });
+            result(err, null);
         }
     });
+    // sql.query("INSERT INTO point set ?", newPoint, function (err, res) {
+
+    //     if (err) {
+    //         console.log("error: ", err);
+    //         result(err, null);
+    //     }
+    //     else {
+    //         console.log(res.insertId);
+    //         result(null, res.insertId);
+    //     }
+    // });
 };
 Point.getPointById = function createPoint(pointId, result) {
     sql.query("Select point from point where pointid = ? ", pointId, function (err, res) {

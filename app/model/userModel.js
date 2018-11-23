@@ -8,6 +8,7 @@ var User = function(user){
     this.cin = user.cin;
     this.contact = user.contact;
     this.email = user.email;
+    this.password = user.password;
 };
 
 User.createUser = function createUser(newUser, result) {    
@@ -22,6 +23,19 @@ User.createUser = function createUser(newUser, result) {
                     result(null, res.insertId);
                 }
             });           
+};
+
+User.searchUser = function searchUser(newUser, result) {    
+    sql.query("Select userid from user where email = ? and password = ?", [newUser.email, newUser.password], function (err, res) {             
+        if(err) {
+            console.log("error: ", err);
+            result(err, null);
+        }
+        else{
+            result(null, res);
+      
+        }
+    });          
 };
 User.getUserById = function createUser(userid, result) {
         sql.query("Select user from user where userid = ? ", userid, function (err, res) {             
