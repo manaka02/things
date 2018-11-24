@@ -32,7 +32,7 @@ exports.create_a_user = function (req, res) {
         user.createUser(new_user, function (err, user) {
 
             if (err)
-                res.send(err);
+                res.status(400).send({ error: true, message: err.sqlMessage });
             res.json(user);
         });
     }

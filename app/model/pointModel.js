@@ -17,6 +17,7 @@ Point.createPoint = function createPoint(newPoint, result) {
     checkOldPoint.then(function res1(oldPoint) {
         if(oldPoint.length > 0){
             console.log("old point already exist");
+            console.log(oldPoint);
             result(null, oldPoint[0].pointid);
         }else{
             console.log("---- Point not found ----");

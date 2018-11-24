@@ -45,6 +45,14 @@ exports.read_a_trajet = function (req, res) {
     });
 };
 
+exports.read_by_name = function (req, res) {
+    Trajet.getTrajetByTargetName(req.params.targetName, function (err, trajet) {
+        if (err)
+            res.send(err);
+        res.json(trajet);
+    });
+};
+
 
 exports.update_a_trajet = function (req, res) {
     Trajet.updateById(req.params.trajetId, new Trajet(req.body), function (err, trajet) {

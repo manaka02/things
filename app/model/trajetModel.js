@@ -10,14 +10,19 @@ var Trajet = function (trajet) {
     this.depart = trajet.depart;
     this.destination = trajet.destination;
 };
+
+
 Trajet.createTrajet = function createTrajet(newTrajet, result) {
     console.log("------ create trajet ------")
 
     PointList = [];
+
     var promises = [newTrajet.depart, newTrajet.destination].map(function (name) {
         return new Promise(function (resolve, reject) {
-            point.createPoint(newTrajet.depart, function (err, pointid) {
+            point.createPoint(name, function (err, pointid) {
                 if (err) { return reject(err); }
+                console.log("pointid");
+                console.log(pointid);
                 PointList.push(pointid);
                 resolve();
             });
@@ -26,6 +31,7 @@ Trajet.createTrajet = function createTrajet(newTrajet, result) {
 
     Promise.all(promises)
         .then(function () {
+            console.log(PointList);
             newTrajet.depart = PointList[0];
             newTrajet.destination = PointList[1];
             console.log(newTrajet);
@@ -43,11 +49,21 @@ Trajet.createTrajet = function createTrajet(newTrajet, result) {
         });
 };
 
-
-
-
 Trajet.getTrajetById = function createUser(trajetId, result) {
-    sql.query("Select trajet from trajet where trajetid = ? ", trajetId, function (err, res) {
+    sql.query("Select * from trajet where trajetid = ? ", trajetId, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(err, null);
+        }
+        else {
+            result(null, res);
+
+        }
+    });
+};
+
+Trajet.getTrajetByTargetName = function getByTarget(targetName, result) {
+    sql.query("Select * from trajetpersub where suburb = ? ", targetName, function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(err, null);

@@ -4,6 +4,7 @@ module.exports = function (app) {
     var user = require('../controller/userController');
     var point = require('../controller/pointController');
     var trajet = require('../controller/trajetController');
+    var join = require('../controller/joindreController');
 
     // todoList Routes
     app.route('/tasks')
@@ -43,8 +44,21 @@ module.exports = function (app) {
         .get(trajet.list_all_trajets)
         .post(trajet.create_a_trajet);
 
+    app.route('/trajetsbyname/:targetName')
+        .get(trajet.read_by_name)
+
     app.route('/trajet/:trajetId')
         .get(trajet.read_a_trajet)
         .put(trajet.update_a_trajet)
         .delete(trajet.delete_a_trajet);
+        
+    //trajetRoutes
+    app.route('/join')
+        .get(join.list_all_joins)
+        .post(join.create_a_join);
+
+    app.route('/join/:joindreId')
+        .get(join.read_a_join)
+        .put(join.update_a_join)
+        .delete(join.delete_a_join);
 };
