@@ -7,7 +7,7 @@ exports.list_all_points = function (req, res) {
 
         console.log('controller')
         if (err)
-            res.send(err);
+            res.status(400).send({ error: true, message: err.sqlMessage });
         console.log('res', point);
         res.send(point);
     });
@@ -28,7 +28,7 @@ exports.create_a_point = function (req, res) {
     else {
         point.createPoint(new_point, function (err, point) {
             if (err)
-                res.send(err);
+                res.status(400).send({ error: true, message: err.sqlMessage });
             res.json(point);
         });
     }
@@ -37,7 +37,7 @@ exports.create_a_point = function (req, res) {
 exports.read_a_point = function (req, res) {
     point.getPointById(req.params.pointId, function (err, point) {
         if (err)
-            res.send(err);
+            res.status(400).send({ error: true, message: err.sqlMessage });
         res.json(point);
     });
 };
@@ -46,7 +46,7 @@ exports.read_a_point = function (req, res) {
 exports.update_a_point = function (req, res) {
     point.updateById(req.params.pointId, new point(req.body), function (err, point) {
         if (err)
-            res.send(err);
+            res.status(400).send({ error: true, message: err.sqlMessage });
         res.json(point);
     });
 };
@@ -55,7 +55,7 @@ exports.update_a_point = function (req, res) {
 exports.delete_a_point = function (req, res) {
     point.remove(req.params.pointId, function (err, point) {
         if (err)
-            res.send(err);
+            res.status(400).send({ error: true, message: err.sqlMessage });
         res.json({ message: 'point successfully deleted' });
     });
 };

@@ -75,20 +75,20 @@ Trajet.getTrajetByTargetName = function getByTarget(targetName, result) {
     });
 };
 
-Trajet.getAllTrajet = function getAllTrajet(geocoding) {
-    ;
-    // sql.query("Select * from trajet", function (err, res) {
+Trajet.getAllTrajet = function getAllTrajet(result) {
 
-    //     if (err) {
-    //         console.log("error: ", err);
-    //         result(null, err);
-    //     }
-    //     else {
-    //         console.log('trajet : ', res);
+    sql.query("Select * from trajet", function (err, res) {
 
-    //         result(null, res);
-    //     }
-    // });
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+        }
+        else {
+            console.log('trajet : ', res);
+
+            result(null, res);
+        }
+    });
 };
 Trajet.updateById = function (trajetid, trajet, result) {
     sql.query("UPDATE trajet SET trajet = ? WHERE trajetid = ?", [trajet.trajet, trajetid], function (err, res) {
