@@ -8,8 +8,8 @@ exports.list_all_tasks = function (req, res) {
         console.log('controller')
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-        console.log('res', task);
-        res.send(task);
+        else
+            res.send(task);
     });
 };
 
@@ -28,9 +28,11 @@ exports.create_a_task = function (req, res) {
 
         Task.createTask(new_task, function (err, task) {
 
-            if (err)
+            if (err){
                 res.status(400).send({ error: true, message: err.sqlMessage });
-            res.json(task);
+            }else{
+                res.json(task);
+            }
         });
     }
 };
@@ -38,27 +40,32 @@ exports.create_a_task = function (req, res) {
 
 exports.read_a_task = function (req, res) {
     Task.getTaskById(req.params.taskId, function (err, task) {
-        if (err)
+        if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
-        res.json(task);
+        }else{
+            res.json(task);
+        }
     });
 };
 
 
 exports.update_a_task = function (req, res) {
     Task.updateById(req.params.taskId, new Task(req.body), function (err, task) {
-        if (err)
+        if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
-
-        res.json(task);
+        }else{
+            res.json(task);
+        }
     });
 };
 
 
 exports.delete_a_task = function (req, res) {
     Task.remove(req.params.taskId, function (err, task) {
-        if (err)
+        if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
-        res.json({ message: 'Task successfully deleted' });
+        }else{
+            res.json(task);
+        }
     });
 };

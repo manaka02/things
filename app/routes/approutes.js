@@ -28,7 +28,7 @@ module.exports = function (app) {
     app.route('/users/:userId')
         .get(user.read_a_user)
         .put(user.update_a_user)
-        .delete(user.delete_a_user); 
+        .delete(user.delete_a_user);
 
     app.route('/login')
         .post(user.search_a_user);
@@ -48,6 +48,11 @@ module.exports = function (app) {
         .get(trajet.list_all_trajets)
         .post(trajet.create_a_trajet);
 
+    //trajetRoutes
+    app.route('/trajets2')
+        .post(trajet.create_a_trajet2);
+
+
     app.route('/trajetsbyname/:targetName')
         .get(trajet.read_by_name)
 
@@ -55,7 +60,7 @@ module.exports = function (app) {
         .get(trajet.read_a_trajet)
         .put(trajet.update_a_trajet)
         .delete(trajet.delete_a_trajet);
-        
+
     //trajetRoutes
     app.route('/join')
         .get(join.list_all_joins)

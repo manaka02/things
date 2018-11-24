@@ -8,8 +8,8 @@ exports.list_all_points = function (req, res) {
         console.log('controller')
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-        console.log('res', point);
-        res.send(point);
+        else
+            res.send(point);
     });
 };
 
@@ -29,7 +29,8 @@ exports.create_a_point = function (req, res) {
         point.createPoint(new_point, function (err, point) {
             if (err)
                 res.status(400).send({ error: true, message: err.sqlMessage });
-            res.json(point);
+            else
+                res.json(point);
         });
     }
 };
@@ -47,7 +48,8 @@ exports.update_a_point = function (req, res) {
     point.updateById(req.params.pointId, new point(req.body), function (err, point) {
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-        res.json(point);
+        else
+            res.json(point);
     });
 };
 
@@ -56,7 +58,8 @@ exports.delete_a_point = function (req, res) {
     point.remove(req.params.pointId, function (err, point) {
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-        res.json({ message: 'point successfully deleted' });
+        else
+            res.json({ message: 'point successfully deleted' });
     });
 };
 

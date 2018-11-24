@@ -15,9 +15,8 @@ exports.list_all_joins = function (req, res) {
         console.log('controller')
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-
-        console.log('res', join);
-        res.send(join);
+        else
+            res.send(join);
     });
 };
 
@@ -32,9 +31,11 @@ exports.create_a_join = function (req, res) {
     }
     else {
         Join.join(new_join, function (err, join) {
-            if (err)
+            if (err){
                 res.status(400).send({ error: true, message: err.sqlMessage });
-            res.json(join);
+            }else{
+                res.json(join);
+            }
         });
     }
 };
@@ -42,20 +43,22 @@ exports.create_a_join = function (req, res) {
 
 exports.read_a_join = function (req, res) {
     Join.getById(req.params.joindreId, function (err, join) {
-        if (err)
+        if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
-
-        res.json(join);
+        }else{
+            res.json(join);
+        }
     });
 };
 
 
 exports.update_a_join = function (req, res) {
     Join.updateById(req.params.joindreId, new Join(req.body), function (err, join) {
-        if (err)
+        if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
-
-        res.json(join);
+        }else{
+            res.json(join);
+        }
     });
 };
 
@@ -64,6 +67,7 @@ exports.delete_a_join = function (req, res) {
     Join.remove(req.params.joindreId, function (err, join) {
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-        res.json({ message: 'Join successfully deleted' });
+        else
+            res.json({ message: 'Join successfully deleted' });
     });
 };

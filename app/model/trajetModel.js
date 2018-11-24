@@ -5,6 +5,7 @@ var point = require('./pointModel.js');
 //Trajet object constructor
 var Trajet = function (trajet) {
     this.datecreation = new Date();
+    this.userid = trajet.userid;
     this.datedepart = trajet.datedepart;
     this.statut = 1;
     this.depart = trajet.depart;
@@ -35,6 +36,7 @@ Trajet.createTrajet = function createTrajet(newTrajet, result) {
             newTrajet.depart = PointList[0];
             newTrajet.destination = PointList[1];
             console.log(newTrajet);
+            delete newTrajet.userid;
             sql.query("INSERT INTO trajet set ?", newTrajet, function (err, res) {
 
                 if (err) {
