@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Sam 24 Novembre 2018 à 00:29
+-- Généré le :  Sam 24 Novembre 2018 à 08:45
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.0.3
 
@@ -29,8 +29,24 @@ SET time_zone = "+00:00";
 CREATE TABLE `joindre` (
   `joindreid` int(11) NOT NULL,
   `trajetid` int(11) NOT NULL,
-  `userid` int(11) NOT NULL
+  `userid` int(11) NOT NULL,
+  `statu` int(10) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `joindre`
+--
+
+INSERT INTO `joindre` (`joindreid`, `trajetid`, `userid`, `statu`) VALUES
+(1, 24, 2, 1),
+(2, 25, 2, 1),
+(3, 24, 4, 1),
+(4, 24, 5, 1),
+(5, 24, 8, 1),
+(6, 10, 1, 1),
+(7, 10, 3, 1),
+(9, 22, 8, 1),
+(25, 22, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -113,11 +129,21 @@ CREATE TABLE `trajet` (
 --
 
 INSERT INTO `trajet` (`trajetid`, `datecreation`, `datedepart`, `statut`, `depart`, `destination`) VALUES
-(7, '2018-11-24 03:00:42', '2018-04-10 23:50:40', 1, 18, 22),
+(7, '2018-11-24 03:00:42', '2018-04-10 23:50:40', 0, 18, 22),
 (8, '2018-11-24 03:01:01', '2018-04-10 23:50:40', 1, 15, 22),
-(9, '2018-11-24 03:01:18', '2018-04-10 23:50:40', 1, 13, 13),
+(9, '2018-11-24 03:01:18', '2018-04-10 23:50:40', 1, 10, 13),
 (10, '2018-11-24 03:01:37', '2018-04-10 23:50:40', 1, 10, 22),
-(15, '2018-11-24 03:09:13', '2018-04-10 23:50:40', 1, 1, 22);
+(15, '2018-11-24 03:09:13', '2018-04-10 23:50:40', 1, 9, 15),
+(16, '2018-11-24 09:39:39', '2018-04-10 23:50:40', 1, 21, 15),
+(17, '2018-11-24 09:43:52', '2018-04-10 23:50:40', 1, 22, 18),
+(18, '2018-11-24 09:44:16', '2018-04-10 23:50:40', 1, 12, 20),
+(19, '2018-11-24 09:44:52', '2018-04-10 23:50:40', 1, 19, 7),
+(20, '2018-11-24 09:46:10', '2018-04-10 23:50:40', 1, 10, 9),
+(21, '2018-11-24 09:46:32', '2018-04-10 23:50:40', 1, 14, 21),
+(22, '2018-11-24 09:47:22', '2018-04-10 23:50:40', 1, 21, 22),
+(23, '2018-11-24 09:52:13', '2018-04-10 23:50:40', 1, 7, 22),
+(24, '2018-11-24 09:54:08', '2018-04-10 23:50:40', 1, 16, 15),
+(25, '2018-11-24 09:54:35', '2018-04-10 23:50:40', 1, 22, 14);
 
 -- --------------------------------------------------------
 
@@ -133,6 +159,44 @@ CREATE TABLE `trajetpersub` (
 ,`destination` int(11)
 ,`suburb` varchar(250)
 ,`city` varchar(250)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `trajetpersub2`
+--
+CREATE TABLE `trajetpersub2` (
+`trajetid` int(11)
+,`datecreation` datetime
+,`datedepart` datetime
+,`statut` int(11)
+,`depart` int(11)
+,`destination` int(11)
+,`suburb` varchar(250)
+,`city` varchar(250)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `trajetpersub3`
+--
+CREATE TABLE `trajetpersub3` (
+`trajetid` int(11)
+,`datecreation` datetime
+,`datedepart` datetime
+,`statut` int(11)
+,`depart` int(11)
+,`departsub` varchar(250)
+,`departcity` varchar(250)
+,`departlat` double
+,`departlong` double
+,`destination` int(11)
+,`destinationsub` varchar(250)
+,`destinationcity` varchar(250)
+,`destinationlat` double
+,`destinationlong` double
 );
 
 -- --------------------------------------------------------
@@ -156,8 +220,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`userid`, `nom`, `prenom`, `cin`, `contact`, `email`, `password`) VALUES
-(1, 'Hasina', 'Tafita', '112341587452', '02541785695', 'hasina@gmail.com', 'dsfdlnljgmldkgmnkjshfldk'),
-(2, 'Toavina', 'Ralambosoa', '112341587452', '02541785695', 'toavina@gmail.com', 'dsfdlnljgmldkgmnkjshfldk');
+(1, 'Hasina', 'Tafita', '112341587452', '02541785695', 'hasina@gmail.com', 'hasina'),
+(2, 'Toavina', 'Ralambosoa', '112341587452', '02541785695', 'toavina@gmail.com', 'toavina'),
+(3, 'Ronaldo', 'Tafitasoa', '112341587452', '42578511256', 'ronaldo@gmail.com', 'ronaldo'),
+(4, 'Rindra', 'Andrianina', '112341587452', '42578511256', 'rindra@gmail.com', 'rindra'),
+(5, 'Vetso', 'Nombana', '112341587452', '42578511256', 'vetso@gmail.com', 'vetso'),
+(7, 'Njara', 'Tafita', '112341587452', '42578511256', 'njara@gmail.com', 'njara'),
+(8, 'Raoul', 'Andriamalala', '112341587452', '42578511256', 'raoul@gmail.com', 'raoul'),
+(9, 'Miora', 'Rakotozafy', '112341587452', '42578511256', 'miora@gmail.com', 'miora');
 
 -- --------------------------------------------------------
 
@@ -167,6 +237,24 @@ INSERT INTO `user` (`userid`, `nom`, `prenom`, `cin`, `contact`, `email`, `passw
 DROP TABLE IF EXISTS `trajetpersub`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `trajetpersub`  AS  select `trajet`.`trajetid` AS `trajetid`,`trajet`.`datecreation` AS `datecreation`,`trajet`.`datedepart` AS `datedepart`,`trajet`.`statut` AS `statut`,`trajet`.`depart` AS `depart`,`trajet`.`destination` AS `destination`,`point`.`suburb` AS `suburb`,`point`.`city` AS `city` from (`trajet` join `point` on((`trajet`.`destination` = `point`.`pointid`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `trajetpersub2`
+--
+DROP TABLE IF EXISTS `trajetpersub2`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `trajetpersub2`  AS  select `trajet`.`trajetid` AS `trajetid`,`trajet`.`datecreation` AS `datecreation`,`trajet`.`datedepart` AS `datedepart`,`trajet`.`statut` AS `statut`,`trajet`.`depart` AS `depart`,`trajet`.`destination` AS `destination`,`pointdestination`.`suburb` AS `suburb`,`pointdestination`.`city` AS `city` from ((`trajet` join `point` `pointdestination` on((`trajet`.`destination` = `pointdestination`.`pointid`))) join `point` `pointdepart` on((`trajet`.`depart` = `pointdepart`.`pointid`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `trajetpersub3`
+--
+DROP TABLE IF EXISTS `trajetpersub3`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `trajetpersub3`  AS  select `trajet`.`trajetid` AS `trajetid`,`trajet`.`datecreation` AS `datecreation`,`trajet`.`datedepart` AS `datedepart`,`trajet`.`statut` AS `statut`,`trajet`.`depart` AS `depart`,`pointdepart`.`suburb` AS `departsub`,`pointdepart`.`city` AS `departcity`,`pointdepart`.`latitude` AS `departlat`,`pointdepart`.`longitude` AS `departlong`,`trajet`.`destination` AS `destination`,`pointdestination`.`suburb` AS `destinationsub`,`pointdestination`.`city` AS `destinationcity`,`pointdestination`.`latitude` AS `destinationlat`,`pointdestination`.`longitude` AS `destinationlong` from ((`trajet` join `point` `pointdestination` on((`trajet`.`destination` = `pointdestination`.`pointid`))) join `point` `pointdepart` on((`trajet`.`depart` = `pointdepart`.`pointid`))) ;
 
 --
 -- Index pour les tables exportées
@@ -215,7 +303,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `joindre`
 --
 ALTER TABLE `joindre`
-  MODIFY `joindreid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `joindreid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT pour la table `point`
 --
@@ -230,12 +318,12 @@ ALTER TABLE `tasks`
 -- AUTO_INCREMENT pour la table `trajet`
 --
 ALTER TABLE `trajet`
-  MODIFY `trajetid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `trajetid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- Contraintes pour les tables exportées
 --

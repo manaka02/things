@@ -5,6 +5,7 @@ var point = require('./pointModel.js');
 //Trajet object constructor
 var Trajet = function (trajet) {
     this.datecreation = new Date();
+    this.trajetId = trajet.trajetId;
     this.userid = trajet.userid;
     this.datedepart = trajet.datedepart;
     this.statut = 1;
@@ -77,9 +78,21 @@ Trajet.getTrajetByTargetName = function getByTarget(targetName, result) {
     });
 };
 
+Trajet.disable = function disable(trajetId, result) {
+    sql.query("UPDATE trajet SET statut = 0 WHERE trajetid = ?", trajetId, function (err, res) {
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+        }
+        else {
+            result(null, res);
+        }
+    });
+}
+
 Trajet.getAllTrajet = function getAllTrajet(result) {
 
-    sql.query("Select * from trajet", function (err, res) {
+    sql.query("Select * from trajet where statut = 1", function (err, res) {
 
         if (err) {
             console.log("error: ", err);

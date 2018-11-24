@@ -104,6 +104,20 @@ exports.update_a_trajet = function (req, res) {
     });
 };
 
+exports.disable = function (req, res) {
+    var new_trajet = new Trajet(req.body);
+    console.log(new_trajet);
+    if (!new_trajet.trajetId) {
+        res.status(400).send({ error: true, message: 'add a valid trajetId' });
+    }
+    Trajet.disable(new_trajet.trajetId, function (err, trajet) {
+        if (err)
+            res.status(400).send({ error: true, message: "Impossible de mettre à jour le statut du trajet" });
+        else
+            res.status(200).send({ success: true, message: "Mis à jour OK" });
+    });
+};
+
 
 exports.delete_a_trajet = function (req, res) {
     Trajet.remove(req.params.trajetId, function (err, trajet) {

@@ -45,6 +45,10 @@ module.exports = function (app) {
         .post(trajet.create_a_trajet);
 
     //trajetRoutes
+    app.route('/trajets-disable')
+        .post(trajet.disable);
+
+    //trajetRoutes
     app.route('/trajets2')
         .post(trajet.create_a_trajet2);
 

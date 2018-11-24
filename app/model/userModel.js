@@ -58,7 +58,9 @@ User.getAllUser = function getAllUser(result) {
                 }
                 else{
                   console.log('user : ', res);  
-
+                  res.forEach(user => {
+                      delete user.password;
+                  });
                  result(null, res);
                 }
             });   
