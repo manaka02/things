@@ -33,6 +33,7 @@ CREATE TABLE `joindre` (
   `statu` int(10) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+<<<<<<< HEAD
 --
 -- Contenu de la table `joindre`
 --
@@ -47,6 +48,10 @@ INSERT INTO `joindre` (`joindreid`, `trajetid`, `userid`, `statu`) VALUES
 (7, 10, 3, 1),
 (9, 22, 8, 1),
 (25, 22, 5, 1);
+=======
+ALTER TABLE `joindre`
+  ADD `statut` int(11) NOT NULL;
+>>>>>>> 2e2a550596a6d06cd6aceed42355202caf54fd8f
 
 -- --------------------------------------------------------
 

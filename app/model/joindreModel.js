@@ -5,6 +5,14 @@ var sql = require('./db.js');
 var Task = function (task) {
     this.userid = task.userid;
     this.trajetid = task.trajetid;
+    this.statut = task.statut;
+};
+
+Task.cancelJoin = function cancelJoin(join, result) {
+    sql.query("UPDATE joindre SET statut = 0 WHERE userid = ? AND trajetid = ?", [join.userid, join.trajetid], function(error, data) {
+        if(error) result(error, null);
+        else result(null, data);
+    });
 };
 
 Task.join = function join(newTask, result) {
