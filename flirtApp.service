@@ -1,0 +1,12 @@
+[Unit]
+Description=firtapp
+
+[Service]
+ExecStart=/root/hackathon/server.js
+Restart=always
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/root/hackathon
+
+[Install]
+WantedBy=multi-user.target

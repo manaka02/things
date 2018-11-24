@@ -63,7 +63,7 @@ Trajet.getTrajetById = function createUser(trajetId, result) {
 };
 
 Trajet.getTrajetByTargetName = function getByTarget(targetName, result) {
-    sql.query("Select * from trajetpersub where suburb = ? ", targetName, function (err, res) {
+    sql.query("Select * from trajetpersub3 where destinationsub = ? ", targetName, function (err, res) {
         if (err) {
             console.log("error: ", err);
             result(err, null);

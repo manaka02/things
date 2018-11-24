@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Ven 23 Novembre 2018 à 19:57
+-- Généré le :  Sam 24 Novembre 2018 à 00:29
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.0.3
 
@@ -46,6 +46,29 @@ CREATE TABLE `point` (
   `city` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `point`
+--
+
+INSERT INTO `point` (`pointid`, `latitude`, `longitude`, `suburb`, `city`) VALUES
+(1, -18.90304, 47.5127808, '67ha Est', 'Antananarivo'),
+(7, -18.939703, 47.522127, 'Ankadimbahoaka', 'Antananarivo'),
+(8, -18.94363, 47.524534, 'Ankadimbahoaka', 'Antananarivo'),
+(9, -18.936049, 47.515589, 'Namontana', 'Antananarivo'),
+(10, -18.936067, 47.524689, 'Soanierana', 'Antananarivo'),
+(11, -18.926708, 47.52777, 'Tsimbazaza', 'Antananarivo'),
+(12, -18.921302, 47.527847, 'Amparibe', 'Antananarivo'),
+(13, -18.917893, 47.528545, 'Andohalo', 'Antananarivo'),
+(14, -18.916213, 47.527601, 'Amparibe', 'Antananarivo'),
+(15, -18.918027, 47.52232, 'Mahamasina', 'Antananarivo'),
+(16, -18.918032, 47.521907, 'Mahamasina', 'Antananarivo'),
+(17, -18.915303, 47.518472, 'Anosy', 'Antananarivo'),
+(18, -18.909829, 47.527266, 'Analakely', 'Antananarivo'),
+(19, -18.908568, 47.525909, 'Analakely', 'Antananarivo'),
+(20, -18.906901, 47.525659, 'Analakely', 'Antananarivo'),
+(21, -18.970876, 47.529961, 'Malaza', 'Antananarivo'),
+(22, -18.979764, 47.532797, 'Andoharanofotsy', 'Antananarivo');
+
 -- --------------------------------------------------------
 
 --
@@ -85,6 +108,33 @@ CREATE TABLE `trajet` (
   `destination` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `trajet`
+--
+
+INSERT INTO `trajet` (`trajetid`, `datecreation`, `datedepart`, `statut`, `depart`, `destination`) VALUES
+(7, '2018-11-24 03:00:42', '2018-04-10 23:50:40', 1, 18, 22),
+(8, '2018-11-24 03:01:01', '2018-04-10 23:50:40', 1, 15, 22),
+(9, '2018-11-24 03:01:18', '2018-04-10 23:50:40', 1, 13, 13),
+(10, '2018-11-24 03:01:37', '2018-04-10 23:50:40', 1, 10, 22),
+(15, '2018-11-24 03:09:13', '2018-04-10 23:50:40', 1, 1, 22);
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `trajetpersub`
+--
+CREATE TABLE `trajetpersub` (
+`trajetid` int(11)
+,`datecreation` datetime
+,`datedepart` datetime
+,`statut` int(11)
+,`depart` int(11)
+,`destination` int(11)
+,`suburb` varchar(250)
+,`city` varchar(250)
+);
+
 -- --------------------------------------------------------
 
 --
@@ -100,6 +150,23 @@ CREATE TABLE `user` (
   `email` varchar(250) NOT NULL,
   `password` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `user`
+--
+
+INSERT INTO `user` (`userid`, `nom`, `prenom`, `cin`, `contact`, `email`, `password`) VALUES
+(1, 'Hasina', 'Tafita', '112341587452', '02541785695', 'hasina@gmail.com', 'dsfdlnljgmldkgmnkjshfldk'),
+(2, 'Toavina', 'Ralambosoa', '112341587452', '02541785695', 'toavina@gmail.com', 'dsfdlnljgmldkgmnkjshfldk');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `trajetpersub`
+--
+DROP TABLE IF EXISTS `trajetpersub`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `trajetpersub`  AS  select `trajet`.`trajetid` AS `trajetid`,`trajet`.`datecreation` AS `datecreation`,`trajet`.`datedepart` AS `datedepart`,`trajet`.`statut` AS `statut`,`trajet`.`depart` AS `depart`,`trajet`.`destination` AS `destination`,`point`.`suburb` AS `suburb`,`point`.`city` AS `city` from (`trajet` join `point` on((`trajet`.`destination` = `point`.`pointid`))) ;
 
 --
 -- Index pour les tables exportées
@@ -137,17 +204,23 @@ ALTER TABLE `trajet`
 -- Index pour la table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`userid`);
+  ADD PRIMARY KEY (`userid`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT pour les tables exportées
 --
 
 --
+-- AUTO_INCREMENT pour la table `joindre`
+--
+ALTER TABLE `joindre`
+  MODIFY `joindreid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT pour la table `point`
 --
 ALTER TABLE `point`
-  MODIFY `pointid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `pointid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT pour la table `tasks`
 --
@@ -157,12 +230,12 @@ ALTER TABLE `tasks`
 -- AUTO_INCREMENT pour la table `trajet`
 --
 ALTER TABLE `trajet`
-  MODIFY `trajetid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `trajetid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- Contraintes pour les tables exportées
 --
