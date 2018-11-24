@@ -49,6 +49,10 @@ module.exports = function (app) {
         .post(trajet.create_a_trajet);
 
     //trajetRoutes
+    app.route('/news')
+        .get(trajet.list_all_trajets_with_join)
+
+    //trajetRoutes
     app.route('/trajets-disable')
         .post(trajet.disable);
 

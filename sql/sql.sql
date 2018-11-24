@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Sam 24 Novembre 2018 à 08:45
+-- Généré le :  Sam 24 Novembre 2018 à 17:24
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.0.3
 
@@ -30,15 +30,14 @@ CREATE TABLE `joindre` (
   `joindreid` int(11) NOT NULL,
   `trajetid` int(11) NOT NULL,
   `userid` int(11) NOT NULL,
-  `statu` int(10) NOT NULL DEFAULT '1'
+  `statut` int(10) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-<<<<<<< HEAD
 --
 -- Contenu de la table `joindre`
 --
 
-INSERT INTO `joindre` (`joindreid`, `trajetid`, `userid`, `statu`) VALUES
+INSERT INTO `joindre` (`joindreid`, `trajetid`, `userid`, `statut`) VALUES
 (1, 24, 2, 1),
 (2, 25, 2, 1),
 (3, 24, 4, 1),
@@ -48,10 +47,26 @@ INSERT INTO `joindre` (`joindreid`, `trajetid`, `userid`, `statu`) VALUES
 (7, 10, 3, 1),
 (9, 22, 8, 1),
 (25, 22, 5, 1);
-=======
-ALTER TABLE `joindre`
-  ADD `statut` int(11) NOT NULL;
->>>>>>> 2e2a550596a6d06cd6aceed42355202caf54fd8f
+
+-- --------------------------------------------------------
+
+--
+-- Doublure de structure pour la vue `news`
+--
+CREATE TABLE `news` (
+`trajetid` int(11)
+,`datedepart` datetime
+,`statut` int(11)
+,`departid` int(11)
+,`debut` varchar(250)
+,`debutlat` double
+,`debutlong` double
+,`destinationid` int(11)
+,`fin` varchar(250)
+,`finlat` double
+,`finlong` double
+,`totaljoin` bigint(21)
+);
 
 -- --------------------------------------------------------
 
@@ -169,22 +184,6 @@ CREATE TABLE `trajetpersub` (
 -- --------------------------------------------------------
 
 --
--- Doublure de structure pour la vue `trajetpersub2`
---
-CREATE TABLE `trajetpersub2` (
-`trajetid` int(11)
-,`datecreation` datetime
-,`datedepart` datetime
-,`statut` int(11)
-,`depart` int(11)
-,`destination` int(11)
-,`suburb` varchar(250)
-,`city` varchar(250)
-);
-
--- --------------------------------------------------------
-
---
 -- Doublure de structure pour la vue `trajetpersub3`
 --
 CREATE TABLE `trajetpersub3` (
@@ -237,20 +236,20 @@ INSERT INTO `user` (`userid`, `nom`, `prenom`, `cin`, `contact`, `email`, `passw
 -- --------------------------------------------------------
 
 --
+-- Structure de la vue `news`
+--
+DROP TABLE IF EXISTS `news`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `news`  AS  select `trajet`.`trajetid` AS `trajetid`,`trajet`.`datedepart` AS `datedepart`,`trajet`.`statut` AS `statut`,`trajet`.`depart` AS `departid`,`pointdepart`.`suburb` AS `debut`,`pointdepart`.`latitude` AS `debutlat`,`pointdepart`.`longitude` AS `debutlong`,`trajet`.`destination` AS `destinationid`,`pointfin`.`suburb` AS `fin`,`pointfin`.`latitude` AS `finlat`,`pointfin`.`longitude` AS `finlong`,count(`joindre`.`joindreid`) AS `totaljoin` from (((`trajet` join `joindre` on((`trajet`.`trajetid` = `joindre`.`trajetid`))) join `point` `pointdepart` on((`pointdepart`.`pointid` = `trajet`.`depart`))) join `point` `pointfin` on((`pointfin`.`pointid` = `trajet`.`destination`))) group by `trajet`.`trajetid`,`trajet`.`datedepart`,`trajet`.`statut`,`trajet`.`depart`,`trajet`.`destination` order by `totaljoin` desc ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la vue `trajetpersub`
 --
 DROP TABLE IF EXISTS `trajetpersub`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `trajetpersub`  AS  select `trajet`.`trajetid` AS `trajetid`,`trajet`.`datecreation` AS `datecreation`,`trajet`.`datedepart` AS `datedepart`,`trajet`.`statut` AS `statut`,`trajet`.`depart` AS `depart`,`trajet`.`destination` AS `destination`,`point`.`suburb` AS `suburb`,`point`.`city` AS `city` from (`trajet` join `point` on((`trajet`.`destination` = `point`.`pointid`))) ;
-
--- --------------------------------------------------------
-
---
--- Structure de la vue `trajetpersub2`
---
-DROP TABLE IF EXISTS `trajetpersub2`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `trajetpersub2`  AS  select `trajet`.`trajetid` AS `trajetid`,`trajet`.`datecreation` AS `datecreation`,`trajet`.`datedepart` AS `datedepart`,`trajet`.`statut` AS `statut`,`trajet`.`depart` AS `depart`,`trajet`.`destination` AS `destination`,`pointdestination`.`suburb` AS `suburb`,`pointdestination`.`city` AS `city` from ((`trajet` join `point` `pointdestination` on((`trajet`.`destination` = `pointdestination`.`pointid`))) join `point` `pointdepart` on((`trajet`.`depart` = `pointdepart`.`pointid`))) ;
 
 -- --------------------------------------------------------
 
@@ -308,7 +307,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `joindre`
 --
 ALTER TABLE `joindre`
-  MODIFY `joindreid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `joindreid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT pour la table `point`
 --

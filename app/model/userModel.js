@@ -33,12 +33,11 @@ User.searchUser = function searchUser(newUser, result) {
         }
         else{
             result(null, res);
-      
         }
     });          
 };
 User.getUserById = function createUser(userid, result) {
-        sql.query("Select user from user where userid = ? ", userid, function (err, res) {             
+        sql.query("Select * from user where userid = ? ", userid, function (err, res) {             
                 if(err) {
                     console.log("error: ", err);
                     result(err, null);

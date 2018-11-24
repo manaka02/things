@@ -4,14 +4,17 @@ var Join = require('../model/joindreModel.js');
 
 exports.cancel_join = function (req, res) {
      Join.cancelJoin(req.body, function(err, data) {
-        if(err) res(err, null);
-        else res(null, data);
+        res.header("Access-Control-Allow-Origin", "*");
+        if (err)
+            res.status(400).send({ error: true, message: err.sqlMessage });
+        else
+        res.status(200).send({ success: true, message: "join cancelled"});
      });
 };
 
 exports.list_all_joins = function (req, res) {
     Join.getAll(function (err, join) {
-
+        res.header("Access-Control-Allow-Origin", "*");
         console.log('controller')
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
@@ -24,7 +27,7 @@ exports.list_all_joins = function (req, res) {
 
 exports.create_a_join = function (req, res) {
     var new_join = new Join(req.body);
-
+    res.header("Access-Control-Allow-Origin", "*");
     //handles null error 
     if (!new_join.userid || !new_join.trajetid) {
         res.status(400).send({ error: true, message: 'Invalid/incomplete data' });
@@ -43,6 +46,7 @@ exports.create_a_join = function (req, res) {
 
 exports.read_a_join = function (req, res) {
     Join.getById(req.params.joindreId, function (err, join) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
         }else{
@@ -54,6 +58,7 @@ exports.read_a_join = function (req, res) {
 
 exports.update_a_join = function (req, res) {
     Join.updateById(req.params.joindreId, new Join(req.body), function (err, join) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
         }else{
@@ -65,6 +70,7 @@ exports.update_a_join = function (req, res) {
 
 exports.delete_a_join = function (req, res) {
     Join.remove(req.params.joindreId, function (err, join) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
         else

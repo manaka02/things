@@ -8,9 +8,10 @@ var Trajet = function (trajet) {
     this.trajetId = trajet.trajetId;
     this.userid = trajet.userid;
     this.datedepart = trajet.datedepart;
-    this.statut = 1;
+    this.statut = trajet.statut;
     this.depart = trajet.depart;
     this.destination = trajet.destination;
+    trajet.statut? null : this.statut = 1; 
 };
 
 
@@ -105,6 +106,26 @@ Trajet.getAllTrajet = function getAllTrajet(result) {
         }
     });
 };
+
+Trajet  .getAllTrajetWithJoinCount = function getAllTrajet(status, result) {
+    request = "Select * from news limit 3"
+    if (status) {
+        request = "Select * from news where statut = 1 limit 3";
+    }
+    sql.query(request, function (err, res) {
+
+        if (err) {
+            console.log("error: ", err);
+            result(null, err);
+        }
+        else {
+            console.log('tasks : ', res);
+
+            result(null, res);
+        }
+    });
+};
+
 Trajet.updateById = function (trajetid, trajet, result) {
     sql.query("UPDATE trajet SET trajet = ? WHERE trajetid = ?", [trajet.trajet, trajetid], function (err, res) {
         if (err) {

@@ -5,7 +5,19 @@ var Join = require('../model/joindreModel.js');
 
 exports.list_all_trajets = function (req, res) {
     Trajet.getAllTrajet(function (err, trajet) {
+        res.header("Access-Control-Allow-Origin", "*");
+        console.log('controller')
+        if (err)
+            res.status(400).send({ error: true, message: err.sqlMessage });
+        else
+            res.send(trajet);
+    });
+};
 
+exports.list_all_trajets_with_join = function (req, res) {
+    var new_trajet = new Trajet(req.body);
+    Trajet.getAllTrajetWithJoinCount(new_trajet,function (err, trajet) {
+        res.header("Access-Control-Allow-Origin", "*");
         console.log('controller')
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
@@ -18,7 +30,7 @@ exports.list_all_trajets = function (req, res) {
 
 exports.create_a_trajet = function (req, res) {
     var new_trajet = new Trajet(req.body);
-
+    res.header("Access-Control-Allow-Origin", "*");
     //handles null error 
     console.log(JSON.stringify(new_trajet))
     if (!new_trajet.datedepart || !new_trajet.depart || !new_trajet.destination) {
@@ -54,6 +66,7 @@ exports.create_a_trajet2 = function (req, res) {
         var promise = new Promise(function (resolve, reject) {
             console.log(" create trajet and add to database");
             Trajet.createTrajet(new_trajet, function (err, res) {
+                res.header("Access-Control-Allow-Origin", "*");
                 if (err) { return reject(err); }
                 console.log("trajetId");
                 new_trajet.trajetid = res
@@ -78,6 +91,7 @@ exports.create_a_trajet2 = function (req, res) {
 
 exports.read_a_trajet = function (req, res) {
     Trajet.getTrajetById(req.params.trajetId, function (err, trajet) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
         else
@@ -87,6 +101,7 @@ exports.read_a_trajet = function (req, res) {
 
 exports.read_by_name = function (req, res) {
     Trajet.getTrajetByTargetName(req.params.targetName, function (err, trajet) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
         else
@@ -97,6 +112,7 @@ exports.read_by_name = function (req, res) {
 
 exports.update_a_trajet = function (req, res) {
     Trajet.updateById(req.params.trajetId, new Trajet(req.body), function (err, trajet) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
         else
@@ -107,6 +123,7 @@ exports.update_a_trajet = function (req, res) {
 exports.disable = function (req, res) {
     var new_trajet = new Trajet(req.body);
     console.log(new_trajet);
+    res.header("Access-Control-Allow-Origin", "*");
     if (!new_trajet.trajetId) {
         res.status(400).send({ error: true, message: 'add a valid trajetId' });
     }
@@ -121,6 +138,7 @@ exports.disable = function (req, res) {
 
 exports.delete_a_trajet = function (req, res) {
     Trajet.remove(req.params.trajetId, function (err, trajet) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
         else

@@ -1,10 +1,10 @@
-'use strict';
+// 'use strict';
 
 var user = require('../model/userModel.js');
 
 exports.list_all_users = function (req, res) {
     user.getAllUser(function (err, user) {
-
+        res.header("Access-Control-Allow-Origin", "*");
         console.log('controller')
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
@@ -17,7 +17,7 @@ exports.list_all_users = function (req, res) {
 
 exports.create_a_user = function (req, res) {
     var new_user = new user(req.body);
-
+    res.header("Access-Control-Allow-Origin", "*");
     //handles null error 
     console.log('all data')
     console.log(new_user)
@@ -40,19 +40,16 @@ exports.create_a_user = function (req, res) {
 };
 
 exports.search_a_user = function (req, res) {
+    
     var new_user = new user(req.body);
-
-    //handles null error 
-    console.log('all data next')
-    console.log(new_user)
-
     if (!new_user.email || !new_user.password) {
-
+        res.header("Access-Control-Allow-Origin", "*");
         res.status(400).send({ error: true, message: 'Invalid mail/password' });
     }
     else {
+        
         user.searchUser(new_user, function (err, user) {
-
+            res.header("Access-Control-Allow-Origin", "*");
             if (err)
                 res.status(400).send({ error: true, message: err.sqlMessage });
             else
@@ -65,7 +62,8 @@ exports.search_a_user = function (req, res) {
 
 
 exports.read_a_user = function (req, res) {
-    user.getuserById(req.params.userId, function (err, user) {
+    user.getUserById(req.params.userId, function (err, user) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
         else
@@ -76,6 +74,7 @@ exports.read_a_user = function (req, res) {
 
 exports.update_a_user = function (req, res) {
     user.updateById(req.params.userId, new user(req.body), function (err, user) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
         else
@@ -86,6 +85,7 @@ exports.update_a_user = function (req, res) {
 
 exports.delete_a_user = function (req, res) {
     user.remove(req.params.userId, function (err, user) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
         else

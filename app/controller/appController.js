@@ -4,7 +4,7 @@ var Task = require('../model/appModel.js');
 
 exports.list_all_tasks = function (req, res) {
     Task.getAllTask(function (err, task) {
-
+        res.header("Access-Control-Allow-Origin", "*");
         console.log('controller')
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
@@ -27,7 +27,7 @@ exports.create_a_task = function (req, res) {
     else {
 
         Task.createTask(new_task, function (err, task) {
-
+            res.header("Access-Control-Allow-Origin", "*");
             if (err){
                 res.status(400).send({ error: true, message: err.sqlMessage });
             }else{
@@ -40,6 +40,7 @@ exports.create_a_task = function (req, res) {
 
 exports.read_a_task = function (req, res) {
     Task.getTaskById(req.params.taskId, function (err, task) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
         }else{
@@ -51,6 +52,7 @@ exports.read_a_task = function (req, res) {
 
 exports.update_a_task = function (req, res) {
     Task.updateById(req.params.taskId, new Task(req.body), function (err, task) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
         }else{
@@ -62,9 +64,11 @@ exports.update_a_task = function (req, res) {
 
 exports.delete_a_task = function (req, res) {
     Task.remove(req.params.taskId, function (err, task) {
+        res.header("Access-Control-Allow-Origin", "*");
         if (err){
             res.status(400).send({ error: true, message: err.sqlMessage });
         }else{
+            
             res.json(task);
         }
     });
