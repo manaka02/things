@@ -8,8 +8,8 @@ exports.list_all_users = function (req, res) {
         console.log('controller')
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-        console.log('res', user);
-        res.send(user);
+        else
+            res.send(user);
     });
 };
 
@@ -33,7 +33,8 @@ exports.create_a_user = function (req, res) {
 
             if (err)
                 res.status(400).send({ error: true, message: err.sqlMessage });
-            res.json(user);
+            else
+                res.json(user);
         });
     }
 };
@@ -54,7 +55,8 @@ exports.search_a_user = function (req, res) {
 
             if (err)
                 res.status(400).send({ error: true, message: err.sqlMessage });
-            res.json(user);
+            else
+                res.json(user);
         });
     }
 };
@@ -66,7 +68,8 @@ exports.read_a_user = function (req, res) {
     user.getuserById(req.params.userId, function (err, user) {
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-        res.json(user);
+        else
+            res.json(user);
     });
 };
 
@@ -75,7 +78,8 @@ exports.update_a_user = function (req, res) {
     user.updateById(req.params.userId, new user(req.body), function (err, user) {
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-        res.json(user);
+        else
+            res.json(user);
     });
 };
 
@@ -84,6 +88,7 @@ exports.delete_a_user = function (req, res) {
     user.remove(req.params.userId, function (err, user) {
         if (err)
             res.status(400).send({ error: true, message: err.sqlMessage });
-        res.json({ message: 'user successfully deleted' });
+        else
+            res.json({ message: 'user successfully deleted' });
     });
 };

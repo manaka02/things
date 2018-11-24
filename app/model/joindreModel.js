@@ -8,10 +8,13 @@ var Task = function (task) {
 };
 
 Task.join = function join(newTask, result) {
+    console.log("create a new join");
+    sql.on('error', function() {console.log("error: ", err);});
     sql.query("INSERT INTO joindre set ?", newTask, function (err, res) {
 
         if (err) {
-            console.log("error: ", err);
+            console.log("error: ", err.code);
+            console.log("mankato ve");
             result(err, null);
         }
         else {
