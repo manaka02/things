@@ -2,6 +2,13 @@
 
 var Join = require('../model/joindreModel.js');
 
+exports.cancel_join = function (req, res) {
+     Join.cancelJoin(req.body, function(err, data) {
+        if(err) res(err, null);
+        else res(null, data);
+     });
+};
+
 exports.list_all_joins = function (req, res) {
     Join.getAll(function (err, join) {
 

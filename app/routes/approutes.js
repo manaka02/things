@@ -6,6 +6,10 @@ module.exports = function (app) {
     var trajet = require('../controller/trajetController');
     var join = require('../controller/joindreController');
 
+    // cancel join
+    app.route('/cancel')
+        .post(join.cancel_join);
+
     // todoList Routes
     app.route('/tasks')
         .get(todoList.list_all_tasks)

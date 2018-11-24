@@ -32,6 +32,9 @@ CREATE TABLE `joindre` (
   `userid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `joindre`
+  ADD `statut` int(11) NOT NULL;
+
 -- --------------------------------------------------------
 
 --
