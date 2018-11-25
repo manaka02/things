@@ -108,9 +108,9 @@ Trajet.getAllTrajet = function getAllTrajet(result) {
 };
 
 Trajet  .getAllTrajetWithJoinCount = function getAllTrajet(status, result) {
-    request = "Select * from news limit 3"
+    request = "Select * from news order by totaljoin desc LIMIT 3"
     if (status) {
-        request = "Select * from news where statut = 1 limit 3";
+        request = "Select * from news where statut = 1 order by totaljoin desc LIMIT 3";
     }
     sql.query(request, function (err, res) {
 

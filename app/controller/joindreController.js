@@ -27,16 +27,21 @@ exports.list_all_joins = function (req, res) {
 
 exports.create_a_join = function (req, res) {
     var new_join = new Join(req.body);
-    res.header("Access-Control-Allow-Origin", "*");
+    
     //handles null error 
     if (!new_join.userid || !new_join.trajetid) {
         res.status(400).send({ error: true, message: 'Invalid/incomplete data' });
     }
     else {
         Join.join(new_join, function (err, join) {
+            
             if (err){
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 res.status(400).send({ error: true, message: err.sqlMessage });
             }else{
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
                 res.json(join);
             }
         });

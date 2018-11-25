@@ -5,7 +5,12 @@ module.exports = function (app) {
     var point = require('../controller/pointController');
     var trajet = require('../controller/trajetController');
     var join = require('../controller/joindreController');
-
+    var news = require('../controller/newsController');
+    app.use(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
     // cancel join
     app.route('/cancel')
         .post(join.cancel_join);
@@ -78,4 +83,7 @@ module.exports = function (app) {
         .get(join.read_a_join)
         .put(join.update_a_join)
         .delete(join.delete_a_join);
+
+    app.route('/datevalide')
+        .get(news.check_Date_Valide)
 };

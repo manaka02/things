@@ -42,6 +42,7 @@ exports.create_a_user = function (req, res) {
 exports.search_a_user = function (req, res) {
     
     var new_user = new user(req.body);
+    console.log(new_user);
     if (!new_user.email || !new_user.password) {
         res.header("Access-Control-Allow-Origin", "*");
         res.status(400).send({ error: true, message: 'Invalid mail/password' });
