@@ -84,6 +84,6 @@ module.exports = function (app) {
         .put(join.update_a_join)
         .delete(join.delete_a_join);
 
-    app.route('/datevalide')
-        .get(news.check_Date_Valide)
+    // app.route('/datevalide')
+    //     .get(news.check_Date_Valide)
 };
