@@ -65,6 +65,9 @@ module.exports = function (app) {
     app.route('/trajets2')
         .post(trajet.create_a_trajet2);
 
+    app.route('/trajetpercoordinate')
+        .post(trajet.list_all_depart_for_one_coordinate);
+
 
     app.route('/trajetsbyname/:targetName')
         .get(trajet.read_by_name)

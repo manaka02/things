@@ -1,7 +1,9 @@
 'use strict';
 
 var Trajet = require('../model/trajetModel.js');
+var Point = require('../model/pointModel.js');
 var Join = require('../model/joindreModel.js');
+var reverse = require('../model/geoCoderModel.js');
 
 exports.list_all_trajets = function (req, res) {
     Trajet.getAllTrajet(function (err, trajet) {
@@ -16,7 +18,7 @@ exports.list_all_trajets = function (req, res) {
 
 exports.list_all_trajets_with_join = function (req, res) {
     var new_trajet = new Trajet(req.body);
-    Trajet.getAllTrajetWithJoinCount(new_trajet,function (err, trajet) {
+    Trajet.getAllTrajetWithJoinCount(new_trajet, function (err, trajet) {
         res.header("Access-Control-Allow-Origin", "*");
         console.log('controller')
         if (err)
@@ -26,7 +28,26 @@ exports.list_all_trajets_with_join = function (req, res) {
     });
 };
 
-
+exports.list_all_depart_for_one_coordinate = function (req, res) {
+    console.log("list all depart for one coordinate")
+    var localisation = new Point(req.body);
+    //handles null error 
+    console.log(localisation)
+    console.log(localisation.longitude)
+    if (!localisation.latitude || !localisation.longitude) {
+        res.status(400).send({ error: true, message: 'Invalid/incomplete data format' });
+    }
+    else {
+        Trajet.getAllTrajetByCoordinate(localisation, function (err, trajet) {
+            res.header("Access-Control-Allow-Origin", "*");
+            console.log('controller')
+            if (err)
+                res.status(400).send({ error: true, message: err.sqlMessage });
+            else
+                res.send(trajet);
+        });
+    }
+};
 
 exports.create_a_trajet = function (req, res) {
     var new_trajet = new Trajet(req.body);
@@ -77,7 +98,7 @@ exports.create_a_trajet2 = function (req, res) {
         promise.then(function () {
             console.log(" create a join then");
             console.log(new_trajet);
-            let data = { userid : userid, trajetid : new_trajet.trajetid };
+            let data = { userid: userid, trajetid: new_trajet.trajetid };
             Join.join(data, function (err, join) {
                 if (err)
                     res.status(400).send({ error: true, message: err.sqlMessage });

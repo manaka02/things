@@ -1,6 +1,7 @@
 'user strict';
 var sql = require('./db.js');
 var point = require('./pointModel.js');
+var reverse = require('./geoCoderModel.js');
 
 //Trajet object constructor
 var Trajet = function (trajet) {
@@ -13,6 +14,7 @@ var Trajet = function (trajet) {
     this.destination = trajet.destination;
     trajet.statut? null : this.statut = 1; 
 };
+
 
 
 Trajet.createTrajet = function createTrajet(newTrajet, result) {
@@ -79,6 +81,37 @@ Trajet.getTrajetByTargetName = function getByTarget(targetName, result) {
     });
 };
 
+Trajet.getAllTrajetByCoordinate = function getByCoordinate(newPoint, result) {
+    checkOldPoint = point.checkExistedPoint(newPoint)
+
+    checkOldPoint.then(function res1(oldPoint) {
+        if(oldPoint.length == 0){
+            console.log("old point already exist");
+            console.log(oldPoint);
+            result(null, oldPoint[0].pointid);
+        }else{
+            data = reverse.getGeoLocalisationData(newPoint)
+            data.then(function(res) {
+                suburb = res.results[0].components.suburb;
+                city = res.results[0].components.city;
+                !suburb ? suburb = city  : null;
+                console.log("---- Get by destination Sub ----");
+                console.log(suburb)
+                // result(null, 1);
+                sql.query("Select * from trajetpersub3 where destinationsub = ? ", suburb, function (err, res) {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                    }
+                    else {
+                        result(null, res);
+                    }
+                });
+            }).catch(console.error);
+        }
+    });
+};
+
 Trajet.disable = function disable(trajetId, result) {
     sql.query("UPDATE trajet SET statut = 0 WHERE trajetid = ?", trajetId, function (err, res) {
         if (err) {
@@ -107,7 +140,7 @@ Trajet.getAllTrajet = function getAllTrajet(result) {
     });
 };
 
-Trajet  .getAllTrajetWithJoinCount = function getAllTrajet(status, result) {
+Trajet.getAllTrajetWithJoinCount = function getAllTrajet(status, result) {
     request = "Select * from news order by totaljoin desc LIMIT 3"
     if (status) {
         request = "Select * from news where statut = 1 order by totaljoin desc LIMIT 3";
@@ -125,6 +158,7 @@ Trajet  .getAllTrajetWithJoinCount = function getAllTrajet(status, result) {
         }
     });
 };
+
 
 Trajet.updateById = function (trajetid, trajet, result) {
     sql.query("UPDATE trajet SET trajet = ? WHERE trajetid = ?", [trajet.trajet, trajetid], function (err, res) {
